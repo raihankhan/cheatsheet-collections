@@ -9,7 +9,7 @@ It is very common for bugs to exist in concurrent code. These bugs often gets di
 A race condition occurs when two or more operations must execute in the correct order, but the program has not been written so that this order is guaranteed to be maintained. There is an instance called data race when one concurrent operation attempts to read a variable while other concurrent operation is trying to write the same variable. 
 
 Race conditions may occur in a code where a concurrent function is being used. There's no guarranty that the operations in a code will execute sequentially. So, there could be multiple scenarios which are possible. 
-```
+```go
 func main() {
 
 	go func() {
@@ -50,7 +50,7 @@ implicitly it is safe within concurrent contexts.**
 ### Memory Access Synchronization
 
 **The critical section** is a code segment where the shared variables can be accessed exclusively. One way to solve this is Memory Access Synchronization. For this, There is a convention for developers to follow. Anytime developers want to access the variable’s memory, they must first call Lock , and when they’re finished they must call Unlock . Code between those two statements can then assume it has exclusive access to data.
-```
+```go
 func main() {
 	var memoryAccess sync.Mutex
 	var value int
@@ -88,8 +88,39 @@ could enter a state in which it will stop functioning altogether.**
 
 ### Deadlock
 
+A deadlocked program is one in which all concurrent processes are waiting
+on one another. In this state, the program will never recover without outside
+intervention.
+
+```go
+type value struct {
+	mu    sync.Mutex
+	value int
+}
+
+func main() {
+	var wg sync.WaitGroup
+	printSum := func(v1, v2 *value) {
+		defer wg.Done()
+		v1.mu.Lock()
+		defer v1.mu.Unlock()
+		time.Sleep(2 * time.Second)
+		v2.mu.Lock()
+		defer v2.mu.Unlock()
+		fmt.Printf("sum=%v\n", v1.value+v2.value)
+	}
+	var a, b value
+
+	wg.Add(2)
+	go printSum(&a, &b) // our first call to printSum locks a and then attempts to lock b
+	go printSum(&b, &a) // second call to printSum has locked b and has attempted to lock a
+	//Both goroutines wait infinitely on each other.
+	wg.Wait()
+}
 
 
+```
+sleep for a period of time to simulate work (and trigger a deadlock).
 
 ### Concurrency VS Parallelism
 
