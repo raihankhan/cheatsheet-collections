@@ -129,3 +129,35 @@ running program.
 
 
 Mutual exclusion (mutex) implies that only one process can be inside the critical section at any time. If any other processes require the critical section, they must wait until it is free.
+
+### Goroutines
+
+A **thread** is a basic unit of CPU utilization, consisting of a program counter, a stack, and a set of registers, ( and a thread ID. ) Traditional ( heavyweight ) processes have a single thread of control - There is one program counter, and one sequence of instructions that can be carried out at any given time. **Green threads** are created and scheduled by Virtual machine without using OS libraries.
+
+Coroutines are simply concurrent subroutines (functions, closures, or
+methods in Go) that are nonpreemptive — that is, they cannot be interrupted.coroutines have multiple points throughout which allow for
+suspension or reentry.Goroutines don’t define their own suspension or reentry points;.Go’s
+runtime observes the runtime behavior of goroutines and automatically
+suspends them when they block and then resumes them when they become
+unblocked. Go’s mechanism for hosting goroutines is an implementation of what’s called
+an M:N scheduler, which means it maps M green threads to N OS threads.Goroutines are then scheduled onto the green threads. When we have more
+goroutines than green threads available, the scheduler handles the distribution
+of the goroutines across the available threads and ensures that when these
+goroutines become blocked, other goroutines can be run. Go follows a model of concurrency called the fork-join model. 1 The word
+fork refers to the fact that at any point in the program, it can split off a child
+branch of execution to be run concurrently with its parent. The word join
+refers to the fact that at some point in the future, these concurrent branches of
+execution will join back together. Where the child rejoins the parent is called
+a join point.
+
+If the main goroutine executes then other goroutines will not execute and the program will be terminated. We can put a time.sleep after invoking a go routine. But it will create a race condition only. we need to create join points to remove race condition.
+
+we can use `sync.WaitGroup` for that purpose.
+
+### Waitgroup
+
+`waitgroup is a great way to wait for a set of concurrent operations to
+complete when you either don’t care about the result of the concurrent
+operation, or you have other means of collecting their results. If neither of
+those conditions are true, I suggest you use channels and a select statement`
+
