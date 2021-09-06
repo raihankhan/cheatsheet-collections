@@ -15,6 +15,16 @@ Pods are the smallest deployable units of computing that you can create and mana
 A Pod (as in a pod of whales or pea pod) is a group of one or more containers, with shared storage and network resources, and a specification for how to run the containers. A Pod's contents are always co-located and co-scheduled, and run in a shared context. A Pod models an application-specific "logical host": it contains one or more application containers which are relatively tightly coupled. 
 In terms of `Docker` concepts, `a Pod` is similar to a group of Docker containers with shared namespaces and shared filesystem volumes.
 
+Kubernetes is designed to accommodate configurations that meet all of the following criteria:
+
+No more than `110 pods` per node
+No more than `5000 nodes`
+No more than `150000 total pods`
+No more than `300000 total containers`
+You can scale your cluster by adding or removing nodes. The way you do this depends on how your cluster is deployed.
+
+
+
 #### kubelet
 An agent that runs on each node in the cluster. It makes sure that containers are running in a Pod.
 
