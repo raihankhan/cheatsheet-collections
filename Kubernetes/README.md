@@ -18,9 +18,13 @@ In terms of `Docker` concepts, `a Pod` is similar to a group of Docker container
 Kubernetes is designed to accommodate configurations that meet all of the following criteria:
 
 No more than `110 pods` per node
+
 No more than `5000 nodes`
+
 No more than `150000 total pods`
+
 No more than `300000 total containers`
+
 You can scale your cluster by adding or removing nodes. The way you do this depends on how your cluster is deployed.
 
 
