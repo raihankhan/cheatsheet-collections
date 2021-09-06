@@ -156,8 +156,8 @@ we can use `sync.WaitGroup` for that purpose.
 
 ### Waitgroup
 
-`waitgroup is a great way to wait for a set of concurrent operations to
+waitgroup is a great way to wait for a set of concurrent operations to
 complete when you either don’t care about the result of the concurrent
 operation, or you have other means of collecting their results. If neither of
-those conditions are true, I suggest you use channels and a select statement`
+those conditions are true, I suggest you use channels and a select statement.
 
