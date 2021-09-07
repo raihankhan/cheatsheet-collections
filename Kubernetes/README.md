@@ -81,4 +81,4 @@ view Kubectl version in json :  `kubectl version -o json`
 
 Describe a node in details : `kubectl describe nodes node-name`
 
-
+! [Udemy CourSe](https://www.youtube.com/watch?v=2CAU4xWdKVM&list=PLMPZQTftRCS8Pp4wiiUruly5ODScvAwcQ&index=3)
