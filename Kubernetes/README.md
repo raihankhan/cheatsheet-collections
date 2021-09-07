@@ -68,11 +68,17 @@ Container Resource Monitoring records generic time-series metrics about containe
 A cluster-level logging mechanism is responsible for saving container logs to a central log store with search/browsing interface.
 
 Create A cluster : `kind create cluster --name cluster-name`
+
 Delete A cluster : `kind delete cluster --name cluster-name`
+
 To interact with a specific cluster:  `kubectl cluster-info --context kind-cluster-name`
+
 To View Active clusters : `kind get clusters`
+
 list out all of the nodes : `kubectl get nodes`
+
 view Kubectl version in json :  `kubectl version -o json`
+
 Describe a node in details : `kubectl describe nodes node-name`
 
 
