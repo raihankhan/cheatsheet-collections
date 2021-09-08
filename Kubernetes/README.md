@@ -26,7 +26,13 @@ No more than `150000 total pods`
 No more than `300000 total containers`
 
 You can scale your cluster by adding or removing nodes. The way you do this depends on how your cluster is deployed.
-
+Applications running in the same Pod share the same IP address and port space (net‐
+work namespace), have the same hostname (UTS namespace)
+Pods are described in a Pod manifest. The Pod manifest is just a text-file representa‐
+tion of the Kubernetes API object. The Kubernetes API server accepts and processes Pod manifests before storing them
+in persistent storage ( etcd ). The scheduler also uses the Kubernetes API to find Pods
+that haven’t been scheduled to a node. The scheduler then places the Pods onto nodes
+depending on the resources and other constraints expressed in the Pod manifests.
 
 
 #### kubelet
@@ -79,8 +85,35 @@ To View Active clusters : `kind get clusters`
 
 list out all of the nodes : `kubectl get nodes`
 
+list out all of the pods : `kubectl get pods`
+
 view Kubectl version in json :  `kubectl version -o json`
 
 Describe a node in details : `kubectl describe nodes node-name`
 
 ! [Udemy CourSe](https://www.youtube.com/watch?v=2CAU4xWdKVM&list=PLMPZQTftRCS8Pp4wiiUruly5ODScvAwcQ&index=3)
+
+Deploy a container image in kubernetes from registry: `kubectl run ecommerce-api --image=raihankhanraka/ecommerce-api:v1.1`
+
+Deploy a container image i kubernetes using YAML file: `kubectl apply -f ecommerce-api-pod.yaml`
+
+after you make changes to the object, you can use the apply commandagain to update the object. The apply tool will only modify objects that are different from the current objects in the cluster. If the objects you are creating already exist in the cluster, it will simply exit successfully without making any changes.
+
+##### Basic YAML configuration file
+
+```yaml
+apiVersion: v1.1
+# Pod starts with capital letter
+kind: Pod
+metadata:
+  name: ecommerce-api
+spec:
+  containers:
+    - image: raihankhanraka/ecommerce-api:v1.1
+      # container name must not use alphanumeric  characters
+      name: ecommerce-api
+      ports:
+        - containerPort: 8080
+          name: http
+          protocol: TCP
+```
