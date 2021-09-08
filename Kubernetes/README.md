@@ -67,6 +67,8 @@ Container Resource Monitoring records generic time-series metrics about containe
 #### Cluster-level Logging
 A cluster-level logging mechanism is responsible for saving container logs to a central log store with search/browsing interface.
 
+ #### Deploying a `kubernetes` clustser using kind
+
 Create A cluster : `kind create cluster --name cluster-name`
 
 Delete A cluster : `kind delete cluster --name cluster-name`
