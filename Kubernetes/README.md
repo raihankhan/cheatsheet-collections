@@ -117,3 +117,87 @@ spec:
           name: http
           protocol: TCP
 ```
+
+#### Kubernetes Workload
+
+ you don't need to manage each Pod directly. you can use workload resources that manage a set of pods. 
+ 
+- Deployment and ReplicaSet
+- StatefulSet
+- DaemonSet
+- Job and CronJob
+
+#### kubernetes Deployment
+
+A Kubernetes deployment is a resource object in Kubernetes that provides declarative updates to applications. A deployment allows you to describe an application’s life cycle, such as which images to use for the app, the number of pods there should be, and the way in which they should be updated. 
+
+A Kubernetes object is a way to tell the Kubernetes system how you want your cluster’s workload to look. After an object has been created, the cluster works to ensure that the object exists, maintaining the desired state of your Kubernetes cluster. 
+
+The process of manually updating containerized applications can be time consuming and tedious. Upgrading a service to the next version requires starting the new version of the pod, stopping the old version of a pod, waiting and verifying that the new version has launched successfully, and sometimes rolling it all back to a previous version in the case of failure.
+
+Performing these steps manually can lead to human errors, and scripting properly can require a significant amount of effort, both of which can turn the release process into a bottleneck. 
+
+A Kubernetes deployment makes this process automated and repeatable. Deployments are entirely managed by the Kubernetes backend, and the whole update process is performed on the server side without client interaction.
+
+A deployment ensures the desired number of pods are running and available at all times. The update process is also wholly recorded, and versioned with options to pause, continue, and roll back to previous versions.
+
+Automate deployments with pre-made, repeatable Kubernetes patterns
+The Kubernetes deployment object lets you:
+
+- Deploy a plica set or pod
+- Update pods and replica sets
+- Rollback to previous deployment versions
+- Scale a deployment
+- Pause or continue a deployment
+
+A sample deployment:
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  labels:
+    app: nginx
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.14.2
+        ports:
+        - containerPort: 80
+```
+
+`kc apply -f nginx-deployment.yaml`
+
+`kc get deployments`
+
+`kc describe deployment/nginx-deployment`
+
+`kc get replicaset`
+
+`kc get pods --show-labels`
+ 
+`kc edit deployment/nginx-deployment --record`
+
+`kubectl get deploy nginx-deployment  -o yaml`
+
+`kc rollout history deployment/nginx-deployment`
+
+`kc rollout history deployment/nginx-deployment --revision=2`
+
+`kc rollout undo deployment/nginx-deployment`
+
+`kc rollout status deployment/nginx-deployment`
+
+`kc describe nodes/nginx-cluster-control-plane`
+
+`kc cluster-info`
