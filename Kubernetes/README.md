@@ -175,29 +175,54 @@ spec:
         ports:
         - containerPort: 80
 ```
+apply the YAML configuration of the deployment:
 
 `kc apply -f nginx-deployment.yaml`
 
+View the list of current deployments:
+
 `kc get deployments`
+
+Describe a deployment:
 
 `kc describe deployment/nginx-deployment`
 
+view the list of current replicasets:
+
 `kc get replicaset`
 
+view pods along with their labels:
+
 `kc get pods --show-labels`
+
+edit a deployment and keep record with a flag. Alternatively, update the yaml local file and then apply to configure it:
  
 `kc edit deployment/nginx-deployment --record`
 
+view the deployment in YAML:
+
 `kubectl get deploy nginx-deployment  -o yaml`
+
+view the rollout history:
 
 `kc rollout history deployment/nginx-deployment`
 
+view a specific rollout history with it's revision number:
+
 `kc rollout history deployment/nginx-deployment --revision=2`
+
+rollback the current rollout history:
 
 `kc rollout undo deployment/nginx-deployment`
 
+view current rollout status:
+
 `kc rollout status deployment/nginx-deployment`
 
+describe the nodes in the running control plane:
+
 `kc describe nodes/nginx-cluster-control-plane`
+
+view the running cluster info:
 
 `kc cluster-info`
