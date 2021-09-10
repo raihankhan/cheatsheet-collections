@@ -73,7 +73,19 @@ Container Resource Monitoring records generic time-series metrics about containe
 #### Cluster-level Logging
 A cluster-level logging mechanism is responsible for saving container logs to a central log store with search/browsing interface.
 
- #### Deploying a `kubernetes` clustser using kind
+#### Label
+
+Labels are key/value pairs that can be attached to Kubernetes objects such as Pods and
+ReplicaSets
+
+#### Selector
+
+When a Kubernetes object refers to a set of other Kubernetes objects, a label selector
+is used
+
+
+
+ #### Deploying a `kubernetes` cluster using kind
 
 Create A cluster : `kind create cluster --name cluster-name`
 
@@ -90,6 +102,8 @@ list out all of the pods : `kubectl get pods`
 view Kubectl version in json :  `kubectl version -o json`
 
 Describe a node in details : `kubectl describe nodes node-name`
+
+Delete all deployments: `kubectl delete deployments --all`
 
 ! [Udemy CourSe](https://www.youtube.com/watch?v=2CAU4xWdKVM&list=PLMPZQTftRCS8Pp4wiiUruly5ODScvAwcQ&index=3)
 
