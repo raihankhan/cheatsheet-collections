@@ -226,3 +226,9 @@ describe the nodes in the running control plane:
 view the running cluster info:
 
 `kc cluster-info`
+
+update an image in deployment:
+
+`kc set image deployment/nginx-deployment nginx=nginx:1.21.1-alpine --record`
+
+
