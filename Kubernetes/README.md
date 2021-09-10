@@ -144,7 +144,7 @@ A deployment ensures the desired number of pods are running and available at all
 Automate deployments with pre-made, repeatable Kubernetes patterns
 The Kubernetes deployment object lets you:
 
-- Deploy a plica set or pod
+- Deploy a replica set or pod
 - Update pods and replica sets
 - Rollback to previous deployment versions
 - Scale a deployment
