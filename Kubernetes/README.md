@@ -245,4 +245,133 @@ update an image in deployment:
 
 `kc set image deployment/nginx-deployment nginx=nginx:1.21.1-alpine --record`
 
+##### Deploying PHP Guestbook application with Redis
+```bash
+ ⚓  ~  cd kubernetes/guestbook-demo/
+ ⚓  ~/k/guestbook-demo  kind create cluster --name guestbook-cluster.yaml
+Creating cluster "guestbook-cluster.yaml" ...
+ ✓ Ensuring node image (kindest/node:v1.21.1) 🖼
+ ✓ Preparing nodes 📦  
+ ✓ Writing configuration 📜 
+ ✓ Starting control-plane 🕹️ 
+ ✓ Installing CNI 🔌 
+ ✓ Installing StorageClass 💾 
+Set kubectl context to "kind-guestbook-cluster.yaml"
+You can now use your cluster with:
+
+kubectl cluster-info --context kind-guestbook-cluster.yaml
+
+Have a nice day! 👋
+ ⚓  ~/k/guestbook-demo  kubectl cluster-info --context kind-guestbook-cluster.yaml
+
+Kubernetes control plane is running at https://127.0.0.1:38423
+CoreDNS is running at https://127.0.0.1:38423/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
+
+To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
+ ⚓  ~/k/guestbook-demo  kubectl get pods
+NAME                           READY   STATUS              RESTARTS   AGE
+redis-master-7f6c575f8-qsxrv   0/1     ContainerCreating   0          26s
+ ⚓  ~/k/guestbook-demo  kubectl get services
+NAME               TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)    AGE
+kubernetes         ClusterIP   10.96.0.1       <none>        443/TCP    5m29s
+redis-master-svc   ClusterIP   10.96.151.241   <none>        6379/TCP   10s
+ ⚓  ~/k/guestbook-demo  kubectl get pods -l app=guestbook -l tier=frontend
+NAME                        READY   STATUS              RESTARTS   AGE
+frontend-74c4d6f9f6-6wnhs   0/1     ContainerCreating   0          32s
+frontend-74c4d6f9f6-7pdzq   0/1     ContainerCreating   0          32s
+frontend-74c4d6f9f6-kxsk5   0/1     ContainerCreating   0          32s
+ ⚓  ~/k/guestbook-demo  kc get pods
+NAME                           READY   STATUS              RESTARTS   AGE
+frontend-74c4d6f9f6-6wnhs      0/1     ContainerCreating   0          61s
+frontend-74c4d6f9f6-7pdzq      0/1     ContainerCreating   0          61s
+frontend-74c4d6f9f6-kxsk5      0/1     ImagePullBackOff    0          61s
+redis-master-7f6c575f8-qsxrv   1/1     Running             0          9m25s
+redis-slave-597b486bb8-9dnnp   1/1     Running             0          5m1s
+redis-slave-597b486bb8-ghqwf   1/1     Running             0          5m1s
+ ⚓  ~/k/guestbook-demo  kc get pods
+NAME                           READY   STATUS    RESTARTS   AGE
+frontend-74c4d6f9f6-6wnhs      1/1     Running   0          34m
+frontend-74c4d6f9f6-7pdzq      1/1     Running   0          34m
+frontend-74c4d6f9f6-kxsk5      1/1     Running   0          34m
+redis-master-7f6c575f8-qsxrv   1/1     Running   0          42m
+redis-slave-597b486bb8-9dnnp   1/1     Running   0          38m
+redis-slave-597b486bb8-ghqwf   1/1     Running   0          38m
+ ⚓  ~/k/guestbook-demo  kubectl get services
+NAME               TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)    AGE
+kubernetes         ClusterIP   10.96.0.1       <none>        443/TCP    47m
+redis-master-svc   ClusterIP   10.96.151.241   <none>        6379/TCP   42m
+redis-slave-svc    ClusterIP   10.96.81.126    <none>        6379/TCP   38m
+ ⚓  ~/k/guestbook-demo  kubectl get services
+NAME               TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)    AGE
+frontend           ClusterIP   10.96.173.12    <none>        80/TCP     27s
+frontend-svc       ClusterIP   10.96.48.19     <none>        80/TCP     7s
+kubernetes         ClusterIP   10.96.0.1       <none>        443/TCP    49m
+redis-master-svc   ClusterIP   10.96.151.241   <none>        6379/TCP   43m
+redis-slave-svc    ClusterIP   10.96.81.126    <none>        6379/TCP   40m
+ ⚓  ~/k/guestbook-demo  kc get pods
+NAME                           READY   STATUS    RESTARTS   AGE
+frontend-74c4d6f9f6-6wnhs      1/1     Running   0          37m
+frontend-74c4d6f9f6-7pdzq      1/1     Running   0          37m
+redis-master-7f6c575f8-qsxrv   1/1     Running   0          46m
+redis-slave-597b486bb8-9dnnp   1/1     Running   0          41m
+redis-slave-597b486bb8-ghqwf   1/1     Running   0          41m
+ ⚓  ~/k/guestbook-demo  kubectl get services
+NAME               TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)    AGE
+frontend           ClusterIP   10.96.173.12    <none>        80/TCP     71s
+frontend-svc       ClusterIP   10.96.48.19     <none>        80/TCP     51s
+kubernetes         ClusterIP   10.96.0.1       <none>        443/TCP    50m
+redis-master-svc   ClusterIP   10.96.151.241   <none>        6379/TCP   44m
+redis-slave-svc    ClusterIP   10.96.81.126    <none>        6379/TCP   40m
+ ⚓  ~/k/guestbook-demo  kubectl get services
+NAME               TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)    AGE
+frontend-svc       ClusterIP   10.96.48.19     <none>        80/TCP     118s
+kubernetes         ClusterIP   10.96.0.1       <none>        443/TCP    51m
+redis-master-svc   ClusterIP   10.96.151.241   <none>        6379/TCP   45m
+redis-slave-svc    ClusterIP   10.96.81.126    <none>        6379/TCP   41m
+ ⚓  ~/k/guestbook-demo 
+
+```
+```bash
+ ⚓  ~/k/guestbook-demo  kubectl apply -f redis-deployment.yaml
+deployment.apps/redis-master created
+ ⚓  ~/k/guestbook-demo  kubectl apply -f services.yaml
+service/redis-master-svc created
+ ⚓  ~/k/guestbook-demo  kubectl apply -f redis-deployment.yaml
+deployment.apps/redis-master unchanged
+deployment.apps/redis-slave created
+ ⚓  ~/k/guestbook-demo  kubectl apply -f services.yaml
+service/redis-master-svc unchanged
+service/redis-slave-svc created
+ ⚓  ~/k/guestbook-demo  kubectl apply -f redis-deployment.yam
+error: the path "redis-deployment.yam" does not exist
+ ⚓  ~/k/guestbook-demo  kubectl apply -f frontend-deployment.yaml
+deployment.apps/frontend created
+ ⚓  ~/k/guestbook-demo  kubectl apply -f frontend-deployment.yaml
+deployment.apps/frontend configured
+ ⚓  ~/k/guestbook-demo  kubectl apply -f services.yaml
+service/redis-master-svc unchanged
+service/redis-slave-svc unchanged
+service/frontend created
+ ⚓  ~/k/guestbook-demo  kubectl apply -f services.yaml
+service/redis-master-svc unchanged
+service/redis-slave-svc unchanged
+service/frontend-svc created
+ ⚓  ~/k/guestbook-demo  kubectl port-forward svc/frontend-svc 8080:80
+Forwarding from 127.0.0.1:8080 -> 80
+Forwarding from [::1]:8080 -> 80
+Handling connection for 8080
+Handling connection for 8080
+Handling connection for 8080
+Handling connection for 8080
+^C⏎                                                                                                   ⚓  ~/k/guestbook-demo  kubectl port-forward svc/frontend-svc 8080:80
+Forwarding from 127.0.0.1:8080 -> 80
+Forwarding from [::1]:8080 -> 80
+Handling connection for 8080
+Handling connection for 8080
+^C⏎                                                                                                   ⚓  ~/k/guestbook-demo  kubectl port-forward svc/frontend-svc 8081:80
+Forwarding from 127.0.0.1:8081 -> 80
+Forwarding from [::1]:8081 -> 80
+Handling connection for 8081
+^C⏎                                                                                              
+```
 
