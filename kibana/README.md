@@ -1,194 +1,205 @@
+<!-----
+NEW: Check the "Suppress top comment" option to remove this info from the output.
+
+Conversion time: 0.678 seconds.
+
+
+Using this Markdown file:
+
+1. Paste this output into your source file.
+2. See the notes and action items below regarding this conversion run.
+3. Check the rendered output (headings, lists, code blocks, tables) for proper
+   formatting and use a linkchecker before you publish this page.
+
+Conversion notes:
+
+* Docs to Markdown version 1.0β31
+* Thu Nov 18 2021 03:53:04 GMT-0800 (PST)
+* Source doc: Elastic Search
+----->
+
+
 You can use this gist to use the kubebuilder client from any of your go code.
-This avoids needing to use multiple clients like we do today.   kubebuilder_client.go
 
-ElasticSearch resources
-elasticsearch-tutorial
-
-Sharding-in-elasticsearch
+This avoids needing to use multiple clients like we do today.   [kubebuilder_client.go](https://gist.github.com/tamalsaha/6215f161788d0293c066d1afd88eb0d4)
 
 
-Go-elasticsearch
+## ElasticSearch resources
 
-Elasticsearch-go-developers-guide
+[elasticsearch-tutorial](https://logz.io/blog/elasticsearch-tutorial/)
+
+[Sharding-in-elasticsearch](https://codingexplained.com/coding/elasticsearch/understanding-sharding-in-elasticsearch) \
 
 
-http-settings
+[Go-elasticsearch](https://github.com/elastic/go-elasticsearch)
 
-webhookValidation
+[Elasticsearch-go-developers-guide](https://developer.okta.com/blog/2021/04/23/elasticsearch-go-developers-guide) \
 
-Node-affinity
 
-Pod-Affinity
+[http-settings](https://www.elastic.co/guide/en/elasticsearch/reference/7.15/modules-network.html#http-settings)
 
-how-finalizers-work
+[webhookValidation](https://medium.com/swlh/kubernetes-validating-webhook-implementation-60f3352b66a)
 
-Understand-helm-upgrade-flags-reset-values-reuse-value
+[Node-affinity](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#node-affinity)
 
-data_tiers
+[Pod-Affinity](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#inter-pod-affinity-and-anti-affinity)
 
-shard filtering
+[how-finalizers-work](https://kubernetes.io/docs/concepts/overview/working-with-objects/finalizers/#how-finalizers-work)
 
-opensearch vs elastic stk vs open source
-Codebase
+[Understand-helm-upgrade-flags-reset-values-reuse-value](https://medium.com/@kcatstack/understand-helm-upgrade-flags-reset-values-reuse-values-6e58ac8f127e)
 
-init() function
-cobra cli
-Informers
+[data_tiers](https://www.elastic.co/guide/en/elasticsearch/reference/current/data-tiers.html)
+
+[shard filtering](https://www.alibabacloud.com/blog/allocate-indexes-to-hot-and-warm-nodes-in-elasticsearch-through-shard-filtering_597456)
+
+[opensearch vs elastic stk vs open source](https://aws.plainenglish.io/the-difference-between-elasticsearch-open-distro-and-opensearch-d43c9a2c31b1)
+
+
+## Codebase
+
+[init() function](https://tutorialedge.net/golang/the-go-init-function/)
+
+[cobra cli](https://towardsdatascience.com/how-to-create-a-cli-in-golang-with-cobra-d729641c7177)
+
+[Informers](https://dev.to/davidsbond/go-creating-dynamic-kubernetes-informers-1npi)
 
 Pkg / controller and distribution 
 
-kubedb.com/elasticsearch
 
-Clustering
-Combined cluster
-Topology cluster
-Concepts
-Helm chart elasticsearch : elastic/helm-charts
-kubedb/ elasticsearch codebase : kubedb/elasticsearch
+## [kubedb.com/elasticsearch](https://kubedb.com/docs/v2021.09.30/guides/elasticsearch/)
+
+
+
+1. Clustering
+    1. Combined cluster
+    2. Topology cluster
+2. Concepts
+3. Helm chart elasticsearch : [elastic/helm-charts](https://github.com/elastic/helm-charts)
+4. kubedb/ elasticsearch codebase : [kubedb/elasticsearch](https://github.com/kubedb/elasticsearch)
 
 Elasticsearch spec
+
 .
+
 |--version : where docker images are specified
+
 	      Name format: {Security Plugin Name}-{Application Version}-{Modification Tag}
-       Samples: searchguard-7.9.3, xpack-7.9.1-v1, opendistro-1.12.0, etc.
+
+
+           Samples: searchguard-7.9.3, xpack-7.9.1-v1, opendistro-1.12.0, etc.
 
 |--kernelSettings: (optional) ****
 
 |--disableSecurity: disable security plugins like safeguard, xpack etc
 
-|--internalUsers: 
+**|--internalUsers: **
 
-|--rolesmapping:
- 
-|--topology:
+**|--rolesmapping:**
 
-|--terminationPolicy:
+** **
 
-- Wipeout : if CR gets deleted, deletes every CR resources
+**|--topology:**
+
+**|--terminationPolicy:**
 
 
-- Halt: if CR gets deleted, keeps PVC and secrets, so that if we deploy CR again, it recreates ES cluster from existing auth_secrets and PVCs.
+    -** Wipeout :** if CR gets deleted, deletes every CR resources \
 
--DoNotTerminate: if CR gets deleted, prevents deletion
+
+
+    - **Halt: **if CR gets deleted, keeps PVC and secrets, so that if we deploy CR again, it recreates ES cluster from existing auth_secrets and PVCs.
+
+
+    -**DoNotTerminate: **if CR gets deleted, prevents deletion
+
 	
-
-
-
-
-
 
 Helm Charts - elasticsearch
 
 Templates-
 
-PDB - You can specify only one of maxUnavailable and minAvailable in a single PodDisruptionBudget.
-pdb-example
-specifying-a-pod disruption budget
+**PDB** - You can specify only one of maxUnavailable and minAvailable in a single PodDisruptionBudget.
 
 
-PodSecurityPolicy - is deprecated as of Kubernetes v1.21, and will be removed in v1.25.
+    [pdb-example](https://kubernetes.io/docs/concepts/workloads/pods/disruptions/#pdb-example)
+
+
+    [specifying-a-pod disruption budget](https://kubernetes.io/docs/tasks/run-application/configure-pdb/#specifying-a-poddisruptionbudget)
+
+**PodSecurityPolicy -** is deprecated as of Kubernetes v1.21, and will be removed in v1.25.
+
 	
-A Pod Security Policy is a cluster-level resource that controls security sensitive aspects of the pod specification. The PodSecurityPolicy objects define a set of conditions that a pod must run with in order to be accepted into the system, as well as defaults for the related fields. 
-policy-reference
+
+
+    A Pod Security Policy is a cluster-level resource that controls security sensitive aspects of the pod specification. The PodSecurityPolicy objects define a set of conditions that a pod must run with in order to be accepted into the system, as well as defaults for the related fields. 
+
+
+    [policy-reference](https://kubernetes.io/docs/concepts/policy/pod-security-policy/#policy-reference)
 
 	
-	yq merge
-	kubedb elasticsearch-init
-	kubedb elastic search custom config
 
+	[yq merge](https://mikefarah.gitbook.io/yq/v/v3.x/commands/merge)
 
+	[kubedb elasticsearch-init](https://github.com/kubedb/elasticsearch-docker/tree/7.14.2-searchguard-v2021.11.10/elasticsearch-init)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	[kubedb elastic search custom config](https://kubedb.com/docs/v2021.09.30/guides/elasticsearch/configuration/overview/)
 
 Kibana
 
-setup kibana with elasticsearch
-kibana configure settings
-kibana config yml
-kibana deployment
-How-to-set-up-an-elasticsearch-fluentd-and-kibana-efk-logging-stack-on-kubernetes
+[setup kibana with elasticsearch](https://www.elastic.co/guide/en/elasticsearch/reference/7.15/security-minimal-setup.html)
+
+[kibana configure settings](https://www.elastic.co/guide/en/kibana/current/settings.html)
+
+[kibana config yml](https://github.com/elastic/kibana/blob/main/config/kibana.yml)
+
+[kibana deployment](https://github.com/kubernetes/kubernetes/blob/master/cluster/addons/fluentd-elasticsearch/kibana-deployment.yaml)
+
+[How-to-set-up-an-elasticsearch-fluentd-and-kibana-efk-logging-stack-on-kubernetes](https://www.digitalocean.com/community/tutorials/how-to-set-up-an-elasticsearch-fluentd-and-kibana-efk-logging-stack-on-kubernetes)
 
 Kibana gist
-https://gist.github.com/chancez/048a8e5ec6f5049ee3f2356aac6fa1d4
+
+[https://gist.github.com/chancez/048a8e5ec6f5049ee3f2356aac6fa1d4](https://gist.github.com/chancez/048a8e5ec6f5049ee3f2356aac6fa1d4)
 
 kibana-plugin
-Kibana-searchguard-plugin-installation
+
+[Kibana-searchguard-plugin-installation](https://docs.search-guard.com/latest/kibana-plugin-installation)
 
 Opendistro kibana version compatibility
-opendistro version vs es version
 
+[opendistro version vs es version](https://opendistro.github.io/for-elasticsearch-docs/version-history/)
 
 Kibana docker images:
 
-bitnami/kibana
-kibana by elastic team
-amazon/opendistro-for-elasticsearch-kibana
-opensearch kibana
-Searchguard-kibana
+[bitnami/kibana](https://hub.docker.com/r/bitnami/kibana)
+
+[kibana by elastic team](https://hub.docker.com/_/kibana)
+
+[amazon/opendistro-for-elasticsearch-kibana](https://hub.docker.com/r/amazon/opendistro-for-elasticsearch-kibana)
+
+[opensearch kibana](https://hub.docker.com/r/opensearchproject/opensearch-dashboards)
+
+[Searchguard-kibana](https://hub.docker.com/r/floragunncom/sg-kibana/tags)
 
 Kibana distro docs:
 
-Searchguard
-Opensearch
-Opendistro
-Elastic Stk
+[Searchguard](https://docs.search-guard.com/latest/kibana-plugin-installation)
 
+[Opensearch](https://opensearch.org/docs/latest/dashboards/install/index/)
+
+[Opendistro](https://opendistro.github.io/for-elasticsearch-docs/docs/install/docker/#sample-docker-compose-file)
+
+[Elastic Stk](https://www.elastic.co/guide/en/kibana/current/index.html)
 
 ………………………………………………….
-kibana/current/xpack-security-authorization.html
-kibana-kubernetes
 
+[kibana/current/xpack-security-authorization.html](https://www.elastic.co/guide/en/kibana/current/xpack-security-authorization.html)
+
+[kibana-kubernetes](https://imti.co/kibana-kubernetes/)
 
 Sidecar
 
-giantswarm/kibana-sidecar
-InMoment/kibana-sidecar
-k8s-service-mesh-istio.html
+[giantswarm/kibana-sidecar](https://github.com/giantswarm/kibana-sidecar)
 
+[InMoment/kibana-sidecar](https://github.com/InMoment/kibana-sidecar)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+[k8s-service-mesh-istio.html](https://www.elastic.co/guide/en/cloud-on-k8s/current/k8s-service-mesh-istio.html)
