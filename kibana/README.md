@@ -1,3 +1,118 @@
+elasticsearchversion - xpack-7.14.0
+
+kibana - docker.elastic.co/kibana/kibana:7.14.0 [elasticstk]
+
+The elasticsearch version and kibana version are recomended to keep the same.
+
+## Elasticsearch yaml
+
+
+```yaml
+apiVersion: kubedb.com/v1alpha2
+kind: Elasticsearch
+metadata:
+  name: es-topology
+  namespace: elastic
+spec:
+  enableSSL: false
+  version: xpack-7.14.0
+  storageType: Durable
+  topology:
+    master:
+      replicas: 1
+      storage:
+        storageClassName: "standard"
+        accessModes:
+        - ReadWriteOnce
+        resources:
+          requests:
+            storage: 1Gi
+    data:
+      replicas: 2
+      storage:
+        storageClassName: "standard"
+        accessModes:
+        - ReadWriteOnce
+        resources:
+          requests:
+            storage: 1Gi
+    ingest:
+      replicas: 1
+      storage:
+        storageClassName: "standard"
+        accessModes:
+        - ReadWriteOnce
+        resources:
+          requests:
+            storage: 1Gi
+```
+
+## kibana-config.yaml
+
+elasticsearch host name format - name_of_es_CR.namespace.svc:port_where_es_is_exposed
+
+get elasticsearch.username - `kubectl get secret -n elastic es-topology-elastic-cred -o jsonpath='{.data.username}' | base64 -d`
+
+get elasticsearch.password - `kubectl get secret -n elastic es-topology-elastic-cred -o jsonpath='{.data.password}' | base64 -d`
+
+this is a configmap for creating a superuser at kibana with elasticsearch.username and elasticsearch.password
+
+```yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kibana-config
+  namespace: kibana
+data:
+  kibana.yml: |
+    ---
+    server.name: kibana
+    server.port: 5601
+    elasticsearch.hosts: ["http://es-topology.elastic.svc:9200"]
+    elasticsearch.username: elastic
+    elasticsearch.password: '8rjzwRXYQfyI-l8q'
+
+```
+
+## kibana-deployment.yaml
+
+
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kibana
+  namespace: kibana
+  labels:
+    component: kibana
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+     component: kibana
+  template:
+    metadata:
+      labels:
+        component: kibana
+    spec:
+      containers:
+      - name: kibana
+        image: docker.elastic.co/kibana/kibana:7.14.0
+        ports:
+        - containerPort: 5601
+          name: http
+        volumeMounts:
+          - name: config
+            mountPath: /usr/share/kibana/config
+            readOnly: true
+      volumes:
+        - name: config
+          configMap:
+            name: kibana-config
+```
+
+
 <!-----
 NEW: Check the "Suppress top comment" option to remove this info from the output.
 
