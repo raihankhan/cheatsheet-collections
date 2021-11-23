@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kibana-config
+  namespace: kibana
+data:
+  kibana.yml: |
+    ---
+    server.name: kibana
+    server.port: 5601
+    # server.basePath: "/api/v1/proxy/namespaces/kibana/services/kibana-logging"
+    elasticsearch.hosts: ["http://es-topology.elastic.svc:9200"]
+    elasticsearch.username: admin
+    elasticsearch.password: 'NNPcuCUYAZG9ph$A'
+    # xpack.security.enabled: false 
+
+    # logging.silent: false
+    # logging.quiet: false
+
+# get elasticsearch.username - kubectl get secret -n elastic es-topology-elastic-cred -o jsonpath='{.data.username}' | base64 -d
+
+# get elasticsearch.password - kubectl get secret -n elastic es-topology-elastic-cred -o jsonpath='{.data.password}' | base64 -d

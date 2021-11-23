@@ -1,0 +1,58 @@
+apiVersion: kubedb.com/v1alpha2
+kind: MariaDB
+metadata:
+  name: mariadb
+  namespace: demo
+spec:
+  serviceTemplates:
+    - alias: primary
+      metadata:
+        labels:
+          kubedb.com/svc: primary
+          svc-label: primary
+        annotations:
+          passTo: service
+    - alias: stats
+      metadata:
+        labels:
+          kubedb.com/svc: stats
+          svc-label: stats
+        annotations:
+          passTo: stats-service
+  podTemplate:
+      metadata:
+        labels:
+          pass-to: pod
+        annotations:
+          annotate-to: pod
+      controller:
+        labels:
+          controler-label : custom-label
+        annotations:
+          controler-annotations : custom-annotation
+  version: "10.4.17"
+  replicas: 3
+  storageType: Durable
+  storage:
+    storageClassName: "standard"
+    accessModes:
+      - ReadWriteOnce
+    resources:
+      requests:
+        storage: 1Gi
+  # requireSSL: true
+  # tls:
+  #   issuerRef:
+  #     apiGroup: cert-manager.io
+  #     kind: Issuer
+  #     name: mysql-issuer
+  #   certificates:
+  #   - alias: server
+  #     subject:
+  #       organizations:
+  #       - kubedb:server
+  #     dnsNames:
+  #     - localhost
+  #     ipAddresses:
+  #     - "127.0.0.1"
+  terminationPolicy: WipeOut

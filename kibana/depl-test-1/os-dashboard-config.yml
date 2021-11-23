@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: opensearch-dashboard-config
+  namespace: kibana
+data:
+  opensearch_dashboards.yml: |
+    ---
+    server.name: opensearch-dashboard
+    server.port: 5601
+    server.ssl.enabled: false
+    
+    # server.basePath: "/api/v1/proxy/namespaces/kibana/services/kibana-logging"
+    opensearch.hosts: ["http://es-topology.elastic.svc:9200"]
+    opensearch.username: admin
+    opensearch.password: 'NNPcuCUYAZG9ph$A'
+    # xpack.security.enabled: false 
+
+    # logging.silent: false
+    # logging.quiet: false
+
+# get elasticsearch.username - kubectl get secret -n elastic es-topology-elastic-cred -o jsonpath='{.data.username}' | base64 -d
+
+# get elasticsearch.password - kubectl get secret -n elastic es-topology-elastic-cred -o jsonpath='{.data.password}' | base64 -d

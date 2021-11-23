@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: opensearch-dashboard-config
+  namespace: elastic
+data:
+  opensearch_dashboards.yml: |
+    ---
+    server.name: opensearch-dashboard
+    server.port: 5601
+    server.ssl.enabled: true
+    server.ssl.certificate: /usr/share/opensearch-dashboards/ssl/tls.crt
+    server.ssl.key: /usr/share/opensearch-dashboards/ssl/tls.key
+
+    opensearch.hosts: ["https://es-topology.elastic.svc:9200"]
+    opensearch.username: admin
+    opensearch.password: mK&i=nqw!UjuCtUk
+    opensearch.ssl.certificateAuthorities: /usr/share/opensearch-dashboards/ssl/tls.crt
+
+    opensearch_security.cookie.secure: true
+
+# get elasticsearch.username - kubectl get secret -n elastic es-topology-elastic-cred -o jsonpath='{.data.username}' | base64 -d
+
+# get elasticsearch.password - kubectl get secret -n elastic es-topology-elastic-cred -o jsonpath='{.data.password}' | base64 -d

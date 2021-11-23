@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: opensearch-dashboard
+  namespace: kibana
+  labels:
+    component: kibana
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+     component: kibana
+  template:
+    metadata:
+      labels:
+        component: kibana
+    spec:
+      containers:
+      - name: opensearch-dashboard
+        image: opensearchproject/opensearch-dashboards:1.1.0
+        ports:
+        - containerPort: 5601
+          name: http
+        # readinessProbe:
+        #   httpGet:
+        #     path: /api/status
+        #     port: http
+        #   initialDelaySeconds: 20
+        #   timeoutSeconds: 5
+        volumeMounts:
+          - name: config
+            mountPath: /usr/share/opensearch-dashboards/config
+            readOnly: true
+      volumes:
+        - name: config
+          configMap:
+            name: opensearch-dashboard-config
+
+
+# elasticstack image : docker.elastic.co/kibana/kibana:7.14.0
+# opendistro image   : amazon/opendistro-for-elasticsearch-kibana:1.13.2
+# searchguard image  : floragunncom/sg-kibana:7.10.2-oss-49.0.0
+# opensearch image   : opensearchproject/opensearch-dashboards:1.1.0

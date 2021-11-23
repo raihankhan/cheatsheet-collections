@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kibana
+  namespace: elastic
+  labels:
+    component: kibana
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+     component: kibana
+  template:
+    metadata:
+      labels:
+        component: kibana
+    spec:
+      containers:
+      - name: kibana
+        image: amazon/opendistro-for-elasticsearch-kibana:1.13.2
+        ports:
+        - containerPort: 5601
+          name: http
+        # readinessProbe:
+        #   httpGet:
+        #     path: /api/status
+        #     port: http
+        #   initialDelaySeconds: 20
+        #   timeoutSeconds: 5
+        volumeMounts:
+          - name: config
+            mountPath: /usr/share/kibana/config
+            readOnly: true
+          - name: secrets
+            mountPath: /etc/ssl
+            readOnly: true
+    
+      volumes:
+        - name: config
+          configMap:
+            name: kibana-config
+        - name: secrets
+          secret:
+            secretName: es-topology-ca-cert
+
+
+
+# elasticstack image : docker.elastic.co/kibana/kibana:7.14.0
+# opendistro image   : amazon/opendistro-for-elasticsearch-kibana:1.13.2
+# searchguard image  : floragunncom/sg-kibana:7.10.2-oss-49.0.0
+# opensearch image   : opensearchproject/opensearch-dashboards:1.1.0
